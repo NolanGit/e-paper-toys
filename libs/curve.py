@@ -7,7 +7,7 @@ from libs.shapes import Point
 def make_bezier(xys):
     # xys should be a sequence of 2-tuples (Bezier control points)
     n = len(xys)
-    combinations = pascal_row(n - 1)
+    combinations = _pascal_row(n - 1)
 
     def bezier(ts):
         # This uses the generalized formula for bezier curves
@@ -25,7 +25,7 @@ def make_bezier(xys):
     return bezier
 
 
-def pascal_row(n, memo={}):
+def _pascal_row(n, memo={}):
     # This returns the nth row of Pascal's Triangle
     if n in memo:
         return memo[n]
@@ -54,16 +54,8 @@ class Curve:
         self.canvas = canvas
 
     def draw(self):
-        self.canvas.image_draw.line(
-            (
-                self.start_point.x,
-                self.start_point.y,
-                self.end_point.x,
-                self.end_point.y,
-            ),
-            fill=0,
-            width=self.line_width
-        )
+        _points = make_bezier([(_.x, _.y) for _ in points])
+        self.canvas.image_draw.polygon(_points, fill=0)
 
 
 from PIL import Image

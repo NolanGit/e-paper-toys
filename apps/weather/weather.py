@@ -76,8 +76,11 @@ row2_col1.rectangle_self()
 row2_col2.rectangle_self()
 row2_col3.rectangle_self()
 
+from libs.curve import Curve
+curve = Curve(points=[row2_col3.center_point,row1_col2.center_point,row2_col1.center_point], canvas=canvas).draw() 
+
 
 text = Text("hello", font24, Point(row2.center_point.x, row2.center_point.y), canvas)
 text.draw()
-
+print(123)
 canvas.save("weather.bmp")
