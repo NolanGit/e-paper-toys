@@ -48,14 +48,18 @@ def _pascal_row(n, memo={}):
 
 class Curve:
     points: List[Point]
+    width :int
 
-    def __init__(self, points:List[Point], canvas: Canvas):
+    def __init__(self, points:List[Point], canvas: Canvas, width:int):
         self.points = points
         self.canvas = canvas
+        self.width = width
 
     def draw(self):
-        _points = make_bezier([(_.x, _.y) for _ in points])
-        self.canvas.image_draw.polygon(_points, fill=0)
+        bezier = make_bezier([(_.x, _.y) for _ in self.points])
+        ts = [t / 100.0 for t in range(100)]
+        _points = bezier(ts)
+        self.canvas.image_draw.line(_points, fill=0, width=self.width)
 
 
 from PIL import Image
