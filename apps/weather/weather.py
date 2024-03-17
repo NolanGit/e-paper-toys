@@ -63,6 +63,7 @@ row1_col1 = row1.add_col()
 row1_col2 = row1.add_col()
 row1_col3 = row1.add_col()
 row1_col4 = row1.add_col()
+row1_col5 = row1.add_col()
 row1_col1.rectangle_self()
 row1_col4.rectangle_self()
 
@@ -80,7 +81,7 @@ row2_col2.rectangle_self()
 row2_col3.rectangle_self()
 
 
-text = Text("hello", font24, Point(row2.center_point.x, row2.center_point.y), canvas)
+text = Text("hello! it's 26°C", font24, Point(row2.center_point.x, row2.center_point.y), canvas)
 text.draw()
 print(123)
 canvas.save("weather.bmp")
