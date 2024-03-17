@@ -57,3 +57,6 @@ class IconSun:
                 line_width=self.line_width,
                 canvas=self.canvas,
             ).draw()
+
+class IconCloud:
+    pass
