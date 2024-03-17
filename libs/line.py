@@ -9,11 +9,11 @@ class Line:
     end_point: Point
     canvas: Canvas
 
-    def __init__(self, start_point: Point, length: int, angle: int,line_width:int, canvas: Canvas):
+    def __init__(self, start_point: Point, length: int, angle: int,width:int, canvas: Canvas):
         self.start_point = start_point
         self.length = length
         self.angle = angle
-        self.line_width = line_width
+        self.width = width
         _ = Point(
             self.start_point.x + math.cos(math.radians(self.angle)) * self.length,
             self.start_point.y - math.sin(math.radians(self.angle)) * self.length,
@@ -30,5 +30,5 @@ class Line:
                 self.end_point.y,
             ),
             fill=0,
-            width=self.line_width
+            width=self.width
         )

@@ -4,7 +4,7 @@ from libs.canvas import Canvas
 from libs.layout import Column, Row
 from libs.shapes import Point
 from libs.text import Text, TextAlign
-from libs.icon import IconSun,IconCloud
+from libs.icon import IconSun,IconCloud,IconRain,IconSnow
 from libs.line import Line
 from libs.font import font24
 
@@ -66,8 +66,10 @@ row1_col4 = row1.add_col()
 row1_col1.rectangle_self()
 row1_col4.rectangle_self()
 
-IconSun(center_point=row1_col4.center_point, canvas=canvas, size=30, line_width=5, lines_count=7).draw()
-IconCloud(center_point=row1_col3.center_point, canvas=canvas, size=30, line_width=5).draw()
+IconSun(center_point=row1_col4.center_point, canvas=canvas, size=30, width=5, lines_count=7).draw()
+IconCloud(center_point=row1_col3.center_point, canvas=canvas, size=30, width=5).draw()
+IconRain(center_point=row1_col2.center_point, canvas=canvas, size=30, width=5).draw()
+IconSnow(center_point=row1_col1.center_point, canvas=canvas, size=30, width=5).draw()
 
 row2.gutter = 30
 row2_col1 = row2.add_col()
