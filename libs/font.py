@@ -1,4 +1,5 @@
 import os
 from PIL import ImageFont
 
-font24 = ImageFont.truetype(os.path.join(os.getcwd(), "resource/Font.ttc"), 24)
+def get_font(font_size=24):
+    return ImageFont.truetype(os.path.join(os.getcwd(), "resource/Font.ttc"), font_size)

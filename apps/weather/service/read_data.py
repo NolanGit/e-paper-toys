@@ -8,13 +8,13 @@ def read_data():
         return f.read()
 
 
-def get_update_time():
+def get_update_time()->str:
     data = read_data()
     update_time = json.loads(data)["updateTime"]
     return update_time.replace("T", " ").replace("+08:00", "")
 
 
-def get_weather_by_date(date: datetime.datetime):
+def get_weather_by_date(date: datetime.datetime) -> dict:
     date_str = date.strftime("%Y-%m-%d")
     for item in json.loads(read_data()).get("daily", []):
         if item.get("fxDate", "") == date_str:

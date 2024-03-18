@@ -45,6 +45,7 @@ class Column(Basic):
         self.y = y
         self.width = width
         self.height = height
+        self.rows = []
 
     @property
     def end_x(self) -> int:

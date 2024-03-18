@@ -152,7 +152,19 @@ class IconCloud:
         )
         points.append(
             Point(
+                self.center_point.x - 1.5 * self.size / 2,
+                self.center_point.y + 1.2 * self.size / 2,
+            )
+        )
+        points.append(
+            Point(
                 self.center_point.x,
+                self.center_point.y + 1.2 * self.size / 2,
+            )
+        )
+        points.append(
+            Point(
+                self.center_point.x + 1.5 * self.size / 2,
                 self.center_point.y + 1.2 * self.size / 2,
             )
         )
@@ -184,7 +196,7 @@ class IconRain:
                 self.center_point.x, self.center_point.y - self.size * 0.3
             ),
             canvas=self.canvas,
-            size=self.size * 0.8,
+            size=self.size * 0.9,
             width=self.width,
         ).draw()
         Line(
@@ -236,7 +248,7 @@ class IconSnow:
                 self.center_point.x, self.center_point.y - self.size * 0.3
             ),
             canvas=self.canvas,
-            size=self.size * 0.8,
+            size=self.size * 0.9,
             width=self.width,
         ).draw()
         start_point1 = Point(self.center_point.x, self.center_point.y + self.size * 0.7)
@@ -250,7 +262,7 @@ class IconSnow:
         self._draw_a_snow(start_point2)
         self._draw_a_snow(start_point3)
 
-    def _draw_a_snow(self, center_point:Point):
+    def _draw_a_snow(self, center_point: Point):
         _lines_count = 5
         for x in range(_lines_count):
             Line(
