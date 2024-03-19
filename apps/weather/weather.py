@@ -22,12 +22,34 @@ WEEK_DICT = {
 }
 
 
-def fill_detail_area(col: Column, canvas: Canvas):
+def draw_sun_icon(canvas: Canvas, center_point: Point):
+    IconSun(
+        center_point=center_point,
+        canvas=canvas,
+        size=30,
+        width=5,
+        lines_count=7,
+    ).draw()
+
+
+def draw_cloud_icon(canvas: Canvas, center_point: Point):
+    IconCloud(center_point=center_point, canvas=canvas, size=30, width=5).draw()
+
+
+def draw_rain_icon(canvas: Canvas, center_point: Point):
+    IconRain(center_point=center_point, canvas=canvas, size=30, width=5).draw()
+
+
+def draw_snow_icon(canvas: Canvas, center_point: Point):
+    IconSnow(center_point=center_point, canvas=canvas, size=30, width=5).draw()
+
+
+def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
     temperature_range_area = col.add_row()
     text_area = col.add_row()
     wind_area = col.add_row()
     sunrise_area = col.add_row()
-    data = get_weather_by_date(date=datetime.datetime.now())
+    data = get_weather_by_date(date=date)
     weather = dacite.from_dict(data_class=Weather, data=data)
     Text(
         text=f"{weather.tempMin} ~ {weather.tempMax}°C",
@@ -51,7 +73,7 @@ def fill_detail_area(col: Column, canvas: Canvas):
         align=TextAlign.Center,
     ).draw()
     Text(
-        text=f"Sun Rise at {weather.sunrise}",
+        text=f"Sunrise: {weather.sunrise}",
         font=get_font(18),
         point=sunrise_area.center_point,
         canvas=canvas,
@@ -69,13 +91,14 @@ def fill_today_content(col: Column, canvas: Canvas):
     text_area = _.add_row()
     data = get_weather_by_date(date=datetime.datetime.now())
     weather = dacite.from_dict(data_class=Weather, data=data)
-    IconSun(
-        center_point=icon_area.center_point,
-        canvas=canvas,
-        size=30,
-        width=5,
-        lines_count=7,
-    ).draw()
+    if int(weather.iconDay) == 100:
+        draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
+    elif int(weather.iconDay) <200:
+        draw_cloud_icon(canvas=canvas, center_point=icon_area.center_point)
+    elif int(weather.iconDay) <400:
+        draw_rain_icon(canvas=canvas, center_point=icon_area.center_point)
+    elif int(weather.iconDay) <500:
+        draw_snow_icon(canvas=canvas, center_point=icon_area.center_point)
     Text(
         text=f"{weather.tempMax}",
         font=get_font(60),
@@ -101,52 +124,43 @@ def fill_today_content(col: Column, canvas: Canvas):
         y_delta=-15,
     ).draw()
     detail_col = detail_area.add_col()
-    fill_detail_area(col=detail_col, canvas=canvas)
+    fill_detail_area(col=detail_col, canvas=canvas, date=datetime.datetime.now())
 
 
-def fill_next_days_content(col: Column, canvas: Canvas):
+def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime):
+    week_area = col.add_row()
+    week_area.set_height(35)
+    date_area = col.add_row()
+    date_area.set_height(35)
     icon_area = col.add_row()
-    temperature_area = col.add_row()
+    icon_area.set_height(130)
     detail_area = col.add_row()
-    temperature_area_number = temperature_area.add_col()
-    _ = temperature_area.add_col()
-    degree_area = _.add_row()
-    text_area = _.add_row()
-    data = get_weather_by_date(date=datetime.datetime.now())
+    data = get_weather_by_date(date=date)
     weather = dacite.from_dict(data_class=Weather, data=data)
-    IconSun(
-        center_point=icon_area.center_point,
+    if int(weather.iconDay) == 100:
+        draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
+    elif int(weather.iconDay) <200:
+        draw_cloud_icon(canvas=canvas, center_point=icon_area.center_point)
+    elif int(weather.iconDay) <400:
+        draw_rain_icon(canvas=canvas, center_point=icon_area.center_point)
+    elif int(weather.iconDay) <500:
+        draw_snow_icon(canvas=canvas, center_point=icon_area.center_point)
+    Text(
+        text=f"{WEEK_DICT[date.weekday()]} ",
+        font=get_font(20),
+        point=week_area.center_point,
         canvas=canvas,
-        size=30,
-        width=5,
-        lines_count=7,
+        align=TextAlign.Center,
     ).draw()
     Text(
-        text=f"{weather.tempMax}",
-        font=get_font(60),
-        point=Point(
-            temperature_area_number.end_x, temperature_area_number.center_point.y
-        ),
+        text=f"{date.month}/{date.day} ",
+        font=get_font(20),
+        point=date_area.center_point,
         canvas=canvas,
-        align=TextAlign.Left,
-    ).draw()
-    Text(
-        text="°C",
-        font=get_font(24),
-        point=degree_area.center_point,
-        canvas=canvas,
-        y_delta=5,
-    ).draw()
-    Text(
-        text=f"{weather.textDay}",
-        font=get_font(24),
-        point=Point(text_area.x, text_area.center_point.y),
-        canvas=canvas,
-        align=TextAlign.Right,
-        y_delta=-15,
+        align=TextAlign.Center,
     ).draw()
     detail_col = detail_area.add_col()
-    fill_detail_area(col=detail_col, canvas=canvas)
+    fill_detail_area(col=detail_col, canvas=canvas, date=date)
 
 
 canvas = Canvas(800, 480)
@@ -205,10 +219,18 @@ day4 = row1.add_col()
 day5 = row1.add_col()
 
 fill_today_content(today, canvas=canvas)
-fill_next_days_content(day2, canvas=canvas)
-fill_next_days_content(day3, canvas=canvas)
-fill_next_days_content(day4, canvas=canvas)
-fill_next_days_content(day5, canvas=canvas)
+fill_next_days_content(
+    day2, canvas=canvas, date=datetime.datetime.now() + datetime.timedelta(days=1)
+)
+fill_next_days_content(
+    day3, canvas=canvas, date=datetime.datetime.now() + datetime.timedelta(days=2)
+)
+fill_next_days_content(
+    day4, canvas=canvas, date=datetime.datetime.now() + datetime.timedelta(days=3)
+)
+fill_next_days_content(
+    day5, canvas=canvas, date=datetime.datetime.now() + datetime.timedelta(days=4)
+)
 # IconSun(
 #     center_point=day4.center_point, canvas=canvas, size=30, width=5, lines_count=7
 # ).draw()
