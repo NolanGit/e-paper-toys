@@ -74,13 +74,17 @@ class Column(Basic):
     def _update_row(self):
         x = 0
         for row in self.rows:
-            row.height = (self.height - self.gutter * (len(self.rows) - 1)) / len(
-                self.rows
-            )
+            height_without_gutter = self.height - self.gutter * (len(self.rows) - 1)
+            fixed_rows = [item for item in self.rows if item.height_fixed]
+            height_without_fixed = height_without_gutter - sum([_.height for _ in fixed_rows])
+            height_average = height_without_fixed/(len(self.rows)-len(fixed_rows))
+            row.height = height_average if not row.height_fixed else row.height
             row.y = (
-                self.y  # starting width
-                + self.gutter * x  # 元素前面有几个gutter带来的宽度
-                + row.height * x  # 元素前面有几个元素height带来的宽度
+                self.y  # starting height
+                + self.gutter * x  # 元素前面有几个gutter带来的高度
+                + sum(
+                    [item.height for item in self.rows[:x]]
+                )  # 元素前面有几个元素height带来的高度
             )
             x += 1
 
@@ -93,6 +97,7 @@ class Row(Basic):
     gutter = 0
     columns = []
     canvas: ImageDraw.ImageDraw = None
+    height_fixed = False
 
     def __init__(self, canvas, x, y, width, height):
         self.canvas = canvas
@@ -111,7 +116,7 @@ class Row(Basic):
 
     def set_height(self, height):
         self.height = height
-        self._height_fixed = True
+        self.height_fixed = True
 
     def add_col(self):
         """
