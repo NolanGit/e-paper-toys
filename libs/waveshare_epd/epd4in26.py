@@ -29,7 +29,7 @@
 
 
 import logging
-from . import epdconfig
+from libs.waveshare_epd import epdconfig as EPDConfig
 
 # Display resolution
 EPD_WIDTH       = 800
@@ -41,6 +41,8 @@ GRAY3  = 0x80 #gray
 GRAY4  = 0x00 #Blackest
 
 logger = logging.getLogger(__name__)
+
+epdconfig = EPDConfig.RaspberryPi()
 
 class EPD:
     def __init__(self):
