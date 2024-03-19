@@ -53,28 +53,28 @@ def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
     weather = dacite.from_dict(data_class=Weather, data=data)
     Text(
         text=f"{weather.tempMin} ~ {weather.tempMax}°C",
-        font=get_font(20),
+        font=get_font(27),
         point=temperature_range_area.center_point,
         canvas=canvas,
         align=TextAlign.Center,
     ).draw()
     Text(
         text=f"{weather.textDay} to {weather.textNight}",
-        font=get_font(18),
+        font=get_font(20),
         point=text_area.center_point,
         canvas=canvas,
         align=TextAlign.Center,
     ).draw()
     Text(
         text=f"{weather.windSpeedDay} m/s to {weather.windSpeedNight} m/s",
-        font=get_font(18),
+        font=get_font(20),
         point=wind_area.center_point,
         canvas=canvas,
         align=TextAlign.Center,
     ).draw()
     Text(
         text=f"Sunrise: {weather.sunrise}",
-        font=get_font(18),
+        font=get_font(20),
         point=sunrise_area.center_point,
         canvas=canvas,
         align=TextAlign.Center,
@@ -164,9 +164,6 @@ def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime)
 
 canvas = Canvas(800, 480)
 
-BORDER_WIDTH = 5
-border = Row(canvas=canvas, x=0, y=0, width=canvas.width, height=canvas.height)
-
 BASIC_X = 15
 STARTING_Y = 15
 CALENDAR_ROW_HEIGHT = 20
@@ -204,7 +201,7 @@ col = Column(
     x=BASIC_X,
     y=calendar_row.end_y + 10,
     width=canvas.width - BASIC_X * 2,
-    height=canvas.height - 2 * BORDER_WIDTH - STARTING_Y - calendar_row.end_y,
+    height=canvas.height -  STARTING_Y - calendar_row.end_y,
 )
 col.gutter = 10
 row1 = col.add_row()
@@ -239,3 +236,4 @@ fill_next_days_content(
 
 
 canvas.save("weather.bmp")
+canvas.draw_in_epd()
