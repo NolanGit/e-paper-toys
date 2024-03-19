@@ -162,7 +162,6 @@ def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime)
     detail_col = detail_area.add_col()
     fill_detail_area(col=detail_col, canvas=canvas, date=date)
 
-
 canvas = Canvas(800, 480)
 
 BORDER_WIDTH = 5
