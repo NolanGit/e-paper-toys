@@ -1,5 +1,4 @@
 from PIL import Image, ImageDraw
-from libs.waveshare_epd.epd4in26 import EPD
 
 class Canvas:
     """
@@ -23,6 +22,8 @@ class Canvas:
         self.Limage.save(file_name)
 
     def draw_in_epd(self):
+        from libs.waveshare_epd.epd4in26 import EPD
+        
         epd = EPD()
 
         epd.init()
