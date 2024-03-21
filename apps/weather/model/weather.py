@@ -3,30 +3,30 @@ from dataclasses import dataclass
 
 @dataclass
 class Weather:
-    fxDate: str
-    sunrise: str
-    sunset: str
-    moonrise: str
-    moonset: str
-    moonPhase: str
-    moonPhaseIcon: str
-    tempMax: str
-    tempMin: str
-    iconDay: str
-    textDay: str
-    iconNight: str
-    textNight: str
-    wind360Day: str
-    windDirDay: str
-    windScaleDay: str
-    windSpeedDay: str
-    wind360Night: str
-    windDirNight: str
-    windScaleNight: str
-    windSpeedNight: str
-    humidity: str
-    precip: str
-    pressure: str
-    vis: str
-    cloud: str
-    uvIndex: str
+    fxDate: str = None
+    sunrise: str = None
+    sunset: str = None
+    moonrise: str = None
+    moonset: str = None
+    moonPhase: str = None
+    moonPhaseIcon: str = None
+    tempMax: str = None
+    tempMin: str = None
+    iconDay: str = None
+    textDay: str = None
+    iconNight: str = None
+    textNight: str = None
+    wind360Day: str = None
+    windDirDay: str = None
+    windScaleDay: str = None
+    windSpeedDay: str = None
+    wind360Night: str = None
+    windDirNight: str = None
+    windScaleNight: str = None
+    windSpeedNight: str = None
+    humidity: str = None
+    precip: str = None
+    pressure: str = None
+    vis: str = None
+    cloud: str = None
+    uvIndex: str = None

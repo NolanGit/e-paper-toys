@@ -1,15 +1,19 @@
 import os
 import json
+import dacite
 import datetime
+
+from apps.weather.model.weather import Weather
+from apps.weather.model.aqi import Aqi
 
 
 def read_data(file_name: str = "weather_data"):
-    with open(f"{os.getcwd()}/apps/weather/{file_name}") as f:
+    with open(f"{os.getcwd()}/apps/weather/resource/{file_name}") as f:
         return f.read()
 
 
 def write_data(text: str, file_name: str = "weather_data"):
-    with open(f"{os.getcwd()}/apps/weather/{file_name}", "w") as f:
+    with open(f"{os.getcwd()}/apps/weather/resource/{file_name}", "w") as f:
         return f.write(text)
 
 
@@ -19,20 +23,20 @@ def get_update_time() -> str:
     return update_time.replace("T", " ").replace("+08:00", "")
 
 
-def get_weather_by_date(date: datetime.datetime) -> dict:
+def get_weather_by_date(date: datetime.datetime) -> Weather:
     date_str = date.strftime("%Y-%m-%d")
     for item in json.loads(read_data()).get("daily", []):
         if item.get("fxDate", "") == date_str:
-            return item
-    return {}
+            return dacite.from_dict(data_class=Weather, data=item)
+    return Weather()
 
 
 def get_aqi_by_date(date: datetime.datetime) -> dict:
     date_str = date.strftime("%Y-%m-%d")
     for item in json.loads(read_data("aqi_data")).get("daily", []):
         if item.get("fxDate", "") == date_str:
-            return item
-    return {}
+            return dacite.from_dict(data_class=Aqi, data=item)
+    return Aqi()
 
 
 if __name__ == "__main__":

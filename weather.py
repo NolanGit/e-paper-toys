@@ -1,4 +1,3 @@
-import dacite
 import datetime
 
 from libs.canvas import Canvas
@@ -8,8 +7,6 @@ from libs.text import Text, TextAlign
 from libs.icon import IconSun, IconCloud, IconRain, IconSnow
 from libs.line import Line
 from libs.font import get_font
-from apps.weather.model.weather import Weather
-from apps.weather.model.aqi import Aqi
 from apps.weather.service.data import (
     get_update_time,
     get_weather_by_date,
@@ -54,10 +51,8 @@ def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
     text_area = col.add_row()
     wind_area = col.add_row()
     sunrise_area = col.add_row()
-    weather_data = get_weather_by_date(date=date)
-    weather = dacite.from_dict(data_class=Weather, data=weather_data)
-    aqi_data = get_aqi_by_date(date=date)
-    aqi = dacite.from_dict(data_class=Aqi, data=aqi_data)
+    weather = get_weather_by_date(date=date)
+    aqi = get_aqi_by_date(date=date)
     Text(
         text=f"{weather.tempMin} ~ {weather.tempMax}°C",
         font=get_font(27),
@@ -97,8 +92,7 @@ def fill_today_content(col: Column, canvas: Canvas):
     _ = temperature_area.add_col()
     degree_area = _.add_row()
     text_area = _.add_row()
-    data = get_weather_by_date(date=datetime.datetime.now())
-    weather = dacite.from_dict(data_class=Weather, data=data)
+    weather = get_weather_by_date(date=datetime.datetime.now())
     if int(weather.iconDay) == 100:
         draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
     elif int(weather.iconDay) < 200:
@@ -144,8 +138,7 @@ def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime)
     icon_area = col.add_row()
     icon_area.set_height(130)
     detail_area = col.add_row()
-    data = get_weather_by_date(date=date)
-    weather = dacite.from_dict(data_class=Weather, data=data)
+    weather = get_weather_by_date(date=date)
     if int(weather.iconDay) == 100:
         draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
     elif int(weather.iconDay) < 200:
