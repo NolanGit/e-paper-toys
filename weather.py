@@ -1,14 +1,13 @@
 import datetime
 
-
-
-from libs.canvas import Canvas
-from libs.layout import Column, Row
 from libs.shapes import Point
-from libs.text import Text, TextAlign
-from libs.icon import IconSun, IconCloud, IconRain, IconSnow
-from libs.line import Line
+from libs.canvas import Canvas
 from libs.font import get_font
+from libs.layout import Column, Row
+from libs.text import Text, TextAlign
+from libs.csv_icon import EIcon, CsvIcon
+from libs.icon import IconSun, IconCloud, IconRain, IconSnow
+
 from apps.weather.service.data import (
     get_update_time,
     get_weather_by_date,
@@ -27,25 +26,21 @@ WEEK_DICT = {
 
 
 def draw_sun_icon(canvas: Canvas, center_point: Point):
-    IconSun(
-        center_point=center_point,
-        canvas=canvas,
-        size=30,
-        width=5,
-        lines_count=7,
+    CsvIcon(
+        icon=EIcon.day_sunny, canvas=canvas, center_point=center_point, size=120
     ).draw()
 
 
 def draw_cloud_icon(canvas: Canvas, center_point: Point):
-    IconCloud(center_point=center_point, canvas=canvas, size=30, width=5).draw()
+    CsvIcon(icon=EIcon.cloud, canvas=canvas, center_point=center_point, size=100).draw()
 
 
 def draw_rain_icon(canvas: Canvas, center_point: Point):
-    IconRain(center_point=center_point, canvas=canvas, size=30, width=5).draw()
+    CsvIcon(icon=EIcon.snow, canvas=canvas, center_point=center_point, size=100).draw()
 
 
 def draw_snow_icon(canvas: Canvas, center_point: Point):
-    IconSnow(center_point=center_point, canvas=canvas, size=30, width=5).draw()
+    CsvIcon(icon=EIcon.snow, canvas=canvas, center_point=center_point, size=100).draw()
 
 
 def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
@@ -112,13 +107,14 @@ def fill_today_content(col: Column, canvas: Canvas):
         canvas=canvas,
         align=TextAlign.Left,
     ).draw()
-    Text(
-        text="°C",
-        font=get_font(24),
-        point=degree_area.center_point,
+
+    CsvIcon(
+        icon=EIcon.celsius,
         canvas=canvas,
-        y_delta=10,
+        center_point=Point(degree_area.center_point.x, degree_area.center_point.y + 15),
+        size=80,
     ).draw()
+
     Text(
         text=f"{weather.textDay}",
         font=get_font(24),
