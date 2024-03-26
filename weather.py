@@ -3,9 +3,10 @@ import datetime
 from libs.shapes import Point
 from libs.canvas import Canvas
 from libs.font import get_font
+from libs.csv_icon import CsvIcon
+from apps.weather.model.icon import EIcon
 from libs.layout import Column, Row
 from libs.text import Text, TextAlign
-from libs.csv_icon import EIcon, CsvIcon
 from libs.icon import IconSun, IconCloud, IconRain, IconSnow
 
 from apps.weather.service.data import (
