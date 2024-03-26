@@ -3,8 +3,6 @@ from libs.shapes import Point
 from libs.line import Line
 from libs.curve import Curve
 
-from PIL import ImageFont
-
 
 class IconSun:
     center_point: Point
