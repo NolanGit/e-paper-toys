@@ -21,7 +21,7 @@ func Call15DaysWeatherApi(ctx context.Context, token string, location_id string,
 		fmt.Printf("Call15DaysWeatherApi failed: %s", err.Error())
 		return
 	}
-	err = service.WriteData(s, "weather_data")
+	err = service.WriteData(s, "15d_data")
 	if err != nil {
 		fmt.Printf("write data failed: %s", err.Error())
 		return

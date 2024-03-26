@@ -7,7 +7,7 @@ from libs.csv_icon import CsvIcon
 from apps.weather.model.icon import EIcon
 from libs.layout import Column, Row
 from libs.text import Text, TextAlign
-from libs.icon import IconSun, IconCloud, IconRain, IconSnow
+from apps.weather.model.qweather_code_icon import QweatherCode
 
 from apps.weather.service.data import (
     get_update_time,
@@ -94,20 +94,19 @@ def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
 def fill_today_content(col: Column, canvas: Canvas):
     icon_area = col.add_row()
     temperature_area = col.add_row()
-    detail_area = col.add_row()
     temperature_area_number = temperature_area.add_col()
     _ = temperature_area.add_col()
     degree_area = _.add_row()
     text_area = _.add_row()
     weather = get_weather_by_date(date=datetime.datetime.now())
-    if int(weather.iconDay) == 100:
-        draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
-    elif int(weather.iconDay) < 200:
-        draw_cloud_icon(canvas=canvas, center_point=icon_area.center_point)
-    elif int(weather.iconDay) < 400:
-        draw_rain_icon(canvas=canvas, center_point=icon_area.center_point)
-    elif int(weather.iconDay) < 500:
-        draw_snow_icon(canvas=canvas, center_point=icon_area.center_point)
+    _icon = QweatherCode(weather.iconDay).icon
+    CsvIcon(
+        icon=_icon,
+        canvas=canvas,
+        center_point=Point(icon_area.center_point.x, icon_area.center_point.y + 10),
+        size=140,
+    ).draw()
+
     Text(
         text=f"{weather.tempMax}",
         font=get_font(60),
@@ -134,8 +133,6 @@ def fill_today_content(col: Column, canvas: Canvas):
         y_delta=-15,
         x_delta=5,
     ).draw()
-    detail_col = detail_area.add_col()
-    fill_detail_area(col=detail_col, canvas=canvas, date=datetime.datetime.now())
 
 
 def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime):
@@ -145,7 +142,6 @@ def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime)
     date_area.set_height(38)
     icon_area = col.add_row()
     icon_area.set_height(130)
-    detail_area = col.add_row()
     weather = get_weather_by_date(date=date)
     if int(weather.iconDay) == 100:
         draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
@@ -171,8 +167,6 @@ def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime)
         align=TextAlign.Center,
         y_delta=10,
     ).draw()
-    detail_col = detail_area.add_col()
-    fill_detail_area(col=detail_col, canvas=canvas, date=date)
 
 
 canvas = Canvas(800, 480)
@@ -218,7 +212,9 @@ col = Column(
 )
 col.gutter = 10
 row1 = col.add_row()
-row1.set_height(320)
+row1.set_height(200)
+detail_row = col.add_row()
+detail_row.set_height(140)
 
 row1.gutter = 10
 today = row1.add_col()
@@ -240,13 +236,16 @@ fill_next_days_content(
 fill_next_days_content(
     day5, canvas=canvas, date=datetime.datetime.now() + datetime.timedelta(days=4)
 )
-# IconSun(
-#     center_point=day4.center_point, canvas=canvas, size=30, width=5, lines_count=7
-# ).draw()
-# IconCloud(center_point=day3.center_point, canvas=canvas, size=30, width=5).draw()
-# IconRain(center_point=day2.center_point, canvas=canvas, size=30, width=5).draw()
-# IconSnow(center_point=day1.center_point, canvas=canvas, size=30, width=5).draw()
 
+detail_cols = []
+for x in range(5):
+    detail_cols.append(detail_row.add_col())
+
+for x in range(len(detail_cols)):
+    fill_detail_area(
+        col=detail_cols[x],
+        canvas=canvas,
+        date=datetime.datetime.now() + datetime.timedelta(days=x),
+    )
 
 canvas.save("weather.bmp")
-# canvas.draw_in_epd()

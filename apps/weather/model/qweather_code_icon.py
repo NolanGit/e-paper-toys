@@ -49,7 +49,7 @@ ICON_DICT = {
     409: EIcon.snow,  # 中到大雪
     410: EIcon.snow,  # 大到暴雪
     499: EIcon.snow,  # 雪
-    500: EIcon.haze,  # 薄雾
+    500: EIcon.day_haze,  # 薄雾
     501: EIcon.fog,  # 雾
     502: EIcon.dust,  # 霾
     503: EIcon.dust,  # 扬沙
@@ -64,7 +64,7 @@ ICON_DICT = {
     514: EIcon.fog,  # 大雾
     515: EIcon.fog,  # 特强浓雾
     900: EIcon.hot,  # 热
-    901: EIcon.snowflake_code,  # 冷
+    901: EIcon.snowflake_cold,  # 冷
     999: EIcon.na,  # 未知
 }
 
@@ -74,9 +74,8 @@ class QweatherCode:
     icon: EIcon
 
     def __init__(self, code: int):
-        self.code = code
-        return self
+        self.code = int(code)
 
     @property
-    def code(self):
+    def icon(self):
         return ICON_DICT.get(self.code, EIcon.na)

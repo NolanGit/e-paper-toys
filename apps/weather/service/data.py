@@ -7,12 +7,12 @@ from apps.weather.model.weather import Weather
 from apps.weather.model.aqi import Aqi
 
 
-def read_data(file_name: str = "weather_data"):
+def read_data(file_name: str = "15d_data"):
     with open(f"{os.getcwd()}/apps/weather/resource/{file_name}") as f:
         return f.read()
 
 
-def write_data(text: str, file_name: str = "weather_data"):
+def write_data(text: str, file_name: str = "15d_data"):
     with open(f"{os.getcwd()}/apps/weather/resource/{file_name}", "w") as f:
         return f.write(text)
 
@@ -25,7 +25,7 @@ def get_update_time() -> str:
 
 def get_weather_by_date(date: datetime.datetime) -> Weather:
     date_str = date.strftime("%Y-%m-%d")
-    for item in json.loads(read_data()).get("daily", []):
+    for item in json.loads(read_data("15d_data")).get("daily", []):
         if item.get("fxDate", "") == date_str:
             return dacite.from_dict(data_class=Weather, data=item)
     return Weather()

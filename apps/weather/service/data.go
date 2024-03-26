@@ -11,7 +11,6 @@ func WriteData(text string, fileName string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("%s/resource/%s", cur, fileName)
 	file, err := os.Create(fmt.Sprintf("%s/resource/%s", cur, fileName))
 	if err != nil {
 		return err
