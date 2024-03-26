@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class EIcon:
     """
@@ -18,15 +19,25 @@ class EIcon:
     day_sunny_overcast: str = "wi-day-sunny-overcast.svg"
     day_sunny: str = "wi-day-sunny.svg"
     day_windy: str = "wi-day-windy.svg"
+    dust: str = "wi-dust.svg"
+    fog: str = "wi-fog.svg"
+    hail: str = "wi-hail.svg"
+    hot: str = "wi-hot.svg"
+    lightning: str = "wi-lightning.svg"
     na: str = "wi-na.svg"
     night_alt_cloudy: str = "wi-night-alt-cloudy.svg"
-    night_clear: str = "wi-night-clear.svg"
     night_alt_partly_cloudy: str = "wi-night-alt-partly-cloudy.svg"
-    night_alt_showers: str = "wi-night-alt-showers.svg"
-    night_alt_rain: str = "wi-night-alt-rain.svg"
     night_alt_rain_mix: str = "wi-night-alt-rain-mix.svg"
+    night_alt_rain: str = "wi-night-alt-rain.svg"
+    night_alt_showers: str = "wi-night-alt-showers.svg"
     night_alt_snow: str = "wi-night-alt-snow.svg"
+    night_clear: str = "wi-night-clear.svg"
+    rain_mix: str = "wi-rain-mix.svg"
+    rain: str = "wi-rain.svg"
     sandstorm: str = "wi-sandstorm.svg"
+    showers: str = "wi-showers.svg"
     snow: str = "wi-snow.svg"
+    snowflake_cold: str = "wi-snowflake-cold.svg"
     strong_wind: str = "wi-strong-wind.svg"
     sunrise: str = "wi-sunrise.svg"
+    thunderstorm: str = "wi-thunderstorm.svg"
