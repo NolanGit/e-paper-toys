@@ -8,7 +8,7 @@ from libs.shapes import Point
 from libs.canvas import Canvas
 from apps.weather.model.icon import EIcon
 
-
+RESOURCE_DIR = f"{os.getcwd()}/resource/icon/"
 
 
 class CsvIcon:
@@ -33,7 +33,8 @@ class CsvIcon:
         a = a.resize((self.size, self.size))
         self.canvas.Limage.paste(
             a,
-            (int(self.center_point.x - self.size/2), int(self.center_point.y - self.size/2)),
+            (
+                int(self.center_point.x - self.size / 2),
+                int(self.center_point.y - self.size / 2),
+            ),
         )
-
-s

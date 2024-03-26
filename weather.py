@@ -49,6 +49,8 @@ def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
     text_area = col.add_row()
     wind_area = col.add_row()
     sunrise_area = col.add_row()
+    sunrise_area_icon = sunrise_area.add_col()
+    sunrise_area_text = sunrise_area.add_col()
     weather = get_weather_by_date(date=date)
     aqi = get_aqi_by_date(date=date)
     Text(
@@ -73,12 +75,19 @@ def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
         align=TextAlign.Center,
         text_type="primary",
     ).draw()
+    CsvIcon(
+        icon=EIcon.sunrise,
+        canvas=canvas,
+        center_point=sunrise_area_icon.center_point,
+        size=29,
+    ).draw()
     Text(
-        text=f"Sunrise: {weather.sunrise}",
+        text=f"{weather.sunrise}",
         font=get_font(20),
-        point=sunrise_area.center_point,
+        point=sunrise_area_text.center_point,
         canvas=canvas,
         align=TextAlign.Center,
+        x_delta=-25,
     ).draw()
 
 
