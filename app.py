@@ -102,19 +102,18 @@ def fill_today_content(col: Column, canvas: Canvas):
     Text(
         text="°C",
         font=get_font(30),
-        point=Point(degree_area.center_point.x - 30, degree_area.center_point.y + 20),
+        point=degree_area.center_point,
         canvas=canvas,
-        align=TextAlign.Right,
-        y_delta=-15,
-        x_delta=5,
+        align=TextAlign.Left,
+        y_delta=10
     ).draw()
 
     Text(
         text=f"{weather.textDay}",
         font=get_font(24),
-        point=Point(text_area.x, text_area.center_point.y),
+        point=Point(text_area.center_point.x, text_area.center_point.y),
         canvas=canvas,
-        align=TextAlign.Right,
+        align=TextAlign.Center,
         y_delta=-15,
         x_delta=5,
     ).draw()
@@ -232,4 +231,4 @@ for x in range(len(detail_cols)):
         date=datetime.datetime.now() + datetime.timedelta(days=x),
     )
 
-canvas.save("weather.bmp")
+canvas.save("app.bmp")
