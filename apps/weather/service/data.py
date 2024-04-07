@@ -20,7 +20,8 @@ def write_data(text: str, file_name: str = "15d_data"):
 def get_update_time() -> str:
     data = read_data()
     update_time = json.loads(data)["updateTime"]
-    return update_time.replace("T", " ").replace("+08:00", "")
+    _ = update_time.replace("T", " ").replace("+08:00", "")
+    return '-'.join(_.split("-")[1:])
 
 
 def get_weather_by_date(date: datetime.datetime) -> Weather:

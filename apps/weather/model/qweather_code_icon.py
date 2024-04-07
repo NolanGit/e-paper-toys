@@ -74,7 +74,7 @@ class QweatherCode:
     icon: EIcon
 
     def __init__(self, code: int):
-        self.code = int(code)
+        self.code = int(code) if code is not None else None
 
     @property
     def icon(self):

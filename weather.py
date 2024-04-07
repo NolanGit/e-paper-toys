@@ -26,24 +26,6 @@ WEEK_DICT = {
 }
 
 
-def draw_sun_icon(canvas: Canvas, center_point: Point):
-    CsvIcon(
-        icon=EIcon.day_sunny, canvas=canvas, center_point=center_point, size=120
-    ).draw()
-
-
-def draw_cloud_icon(canvas: Canvas, center_point: Point):
-    CsvIcon(icon=EIcon.cloud, canvas=canvas, center_point=center_point, size=100).draw()
-
-
-def draw_rain_icon(canvas: Canvas, center_point: Point):
-    CsvIcon(icon=EIcon.snow, canvas=canvas, center_point=center_point, size=100).draw()
-
-
-def draw_snow_icon(canvas: Canvas, center_point: Point):
-    CsvIcon(icon=EIcon.snow, canvas=canvas, center_point=center_point, size=100).draw()
-
-
 def fill_detail_area(col: Column, canvas: Canvas, date: datetime.datetime):
     temperature_range_area = col.add_row()
     text_area = col.add_row()
@@ -117,11 +99,14 @@ def fill_today_content(col: Column, canvas: Canvas):
         align=TextAlign.Left,
     ).draw()
 
-    CsvIcon(
-        icon=EIcon.celsius,
+    Text(
+        text="°C",
+        font=get_font(30),
+        point=Point(degree_area.center_point.x - 30, degree_area.center_point.y + 20),
         canvas=canvas,
-        center_point=Point(degree_area.center_point.x, degree_area.center_point.y + 15),
-        size=80,
+        align=TextAlign.Right,
+        y_delta=-15,
+        x_delta=5,
     ).draw()
 
     Text(
@@ -143,14 +128,13 @@ def fill_next_days_content(col: Column, canvas: Canvas, date: datetime.datetime)
     icon_area = col.add_row()
     icon_area.set_height(130)
     weather = get_weather_by_date(date=date)
-    if int(weather.iconDay) == 100:
-        draw_sun_icon(canvas=canvas, center_point=icon_area.center_point)
-    elif int(weather.iconDay) < 200:
-        draw_cloud_icon(canvas=canvas, center_point=icon_area.center_point)
-    elif int(weather.iconDay) < 400:
-        draw_rain_icon(canvas=canvas, center_point=icon_area.center_point)
-    elif int(weather.iconDay) < 500:
-        draw_snow_icon(canvas=canvas, center_point=icon_area.center_point)
+    _icon = QweatherCode(weather.iconDay).icon
+    CsvIcon(
+        icon=_icon,
+        canvas=canvas,
+        center_point=icon_area.center_point,
+        size=120,
+    ).draw()
     Text(
         text=f"{WEEK_DICT[date.weekday()]} ",
         font=get_font(20),
