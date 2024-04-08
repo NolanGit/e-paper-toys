@@ -80,6 +80,7 @@ class Text:
         )
 
     def draw(self):
+        self._cal_length()
         if self.text_type == "primary":
             self._draw_rounded_rectangle()
             self.canvas.image_draw.text(

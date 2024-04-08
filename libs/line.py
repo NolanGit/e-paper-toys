@@ -32,3 +32,4 @@ class Line:
             fill=0,
             width=self.width
         )
+        return self
