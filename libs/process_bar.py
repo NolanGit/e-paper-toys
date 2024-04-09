@@ -17,6 +17,7 @@ class ProcessBar:
         height: int,
         process: float,
         canvas: Canvas,
+        padding: int = 2,
     ) -> None:
         self.x = start_point.x
         self.y = start_point.y
@@ -24,6 +25,7 @@ class ProcessBar:
         self.height = height
         self.process = process
         self.canvas = canvas
+        self.padding = padding
 
     def draw(self):
         self.canvas.image_draw.rectangle(
@@ -38,13 +40,12 @@ class ProcessBar:
         )
         self.process_end_x = int(self.process * (self.width - 2 * self.padding))
         self.canvas.image_draw.rectangle(
-            (
-                self.x + self.padding,
-                self.y + self.padding,
-                self.x + self.process_end_x,
-                self.y + self.height - 2 * self.padding,
-            ),
-            outline=0,
-            fill=1,
-            width=1,
+            xy=[
+                (self.x + self.padding, self.y + self.padding),
+                (
+                    self.x + self.process_end_x,
+                    self.y + self.height -  self.padding,
+                ),
+            ],
+            width=int(self.height/2),
         )

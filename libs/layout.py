@@ -38,6 +38,7 @@ class Column(Basic):
     gutter = 0
     rows = []
     canvas: ImageDraw.ImageDraw = None
+    width_fixed = False
 
     def __init__(self, canvas, x, y, width, height):
         self.canvas = canvas
@@ -53,6 +54,10 @@ class Column(Basic):
         结束横坐标
         """
         return self.x + self.width
+
+    def set_width(self, width):
+        self.width = width
+        self.width_fixed = True
 
     def add_row(self):
         """
@@ -138,12 +143,16 @@ class Row(Basic):
     def _update_col(self):
         x = 0
         for col in self.columns:
-            col.width = (self.width - self.gutter * (len(self.columns) - 1)) / len(
-                self.columns
-            )
+            width_without_gutter = self.width - self.gutter * (len(self.columns) - 1)
+            fixed_cols = [item for item in self.columns if item.width_fixed]
+            width_without_fixed = width_without_gutter - sum([_.width for _ in fixed_cols])
+            width_average = width_without_fixed/(len(self.columns)-len(fixed_cols))
+            col.width = width_average if not col.width_fixed else col.width
             col.x = (
-                self.x  # 起始宽度
+                self.x  # starting width
                 + self.gutter * x  # 元素前面有几个gutter带来的宽度
-                + col.width * x  # 元素前面有几个元素width带来的宽度
+                + sum(
+                    [item.width for item in self.columns[:x]]
+                )  # 元素前面有几个元素width带来的宽度
             )
             x += 1

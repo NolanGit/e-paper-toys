@@ -3,17 +3,13 @@ import datetime
 from libs.shapes import Point
 from libs.canvas import Canvas
 from libs.font import get_font
-from libs.csv_icon import CsvIcon
-from apps.weather.model.icon import EIcon
 from libs.layout import Column, Row
+from libs.process_bar import ProcessBar
 from libs.line import Line
 from libs.text import Text, TextAlign
-from apps.weather.model.qweather_code_icon import QweatherCode
 
 from apps.weather.service.data import (
     get_update_time,
-    get_weather_by_date,
-    get_aqi_by_date,
 )
 from apps.calendar.service.data import get_next_event, get_current_event
 from apps.weather.draw import draw
@@ -25,15 +21,15 @@ CURRENT_DATE = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=8), "zh")
 )
 
-BASIC_X = 15
-STARTING_Y = 15
+BASIC_X_MARGIN = 15
+BASIC_Y_MARGIN = 15
 CALENDAR_ROW_HEIGHT = 20
 
 calendar_row = Row(
     canvas=canvas,
-    x=BASIC_X,
-    y=STARTING_Y,
-    width=canvas.width - BASIC_X * 2,
+    x=BASIC_X_MARGIN,
+    y=BASIC_Y_MARGIN,
+    width=canvas.width - BASIC_X_MARGIN * 2,
     height=CALENDAR_ROW_HEIGHT,
 )
 calendar_col1 = calendar_row.add_col()
@@ -64,28 +60,29 @@ update_time = Text(
 
 weather_row = Row(
     canvas=canvas,
-    x=BASIC_X,
+    x=BASIC_X_MARGIN,
     y=calendar_row.end_y + 10,
-    width=canvas.width - BASIC_X * 2,
+    width=canvas.width - BASIC_X_MARGIN * 2,
     height=340,
 )
 draw(canvas=canvas, row=weather_row)
 
 divider1 = Line(
-    Point(BASIC_X, weather_row.end_y + 15),
-    length=canvas.width - BASIC_X * 2,
+    Point(BASIC_X_MARGIN, weather_row.end_y + 15),
+    length=canvas.width - BASIC_X_MARGIN * 2,
     angle=0,
     width=1,
     canvas=canvas,
 ).draw()
 
-buttom_col = Column(
+bottom_row = Row(
     canvas=canvas,
-    x=BASIC_X,
-    y=weather_row.end_y + 10,
-    width=canvas.width - BASIC_X * 2,
-    height=canvas.height - STARTING_Y - weather_row.end_y,
+    x=BASIC_X_MARGIN,
+    y=weather_row.end_y + 15,
+    width=canvas.width - BASIC_X_MARGIN * 2,
+    height=canvas.height - BASIC_Y_MARGIN - weather_row.end_y,
 )
+
 next_event = get_next_event(
     CURRENT_DATE,
     "cn_zh.ics",
@@ -93,7 +90,7 @@ next_event = get_next_event(
 next_event_text = Text(
     text="",
     font=get_font(24),
-    point=Point(BASIC_X, buttom_col.center_point.y),
+    point=Point(BASIC_X_MARGIN, bottom_row.center_point.y),
     canvas=canvas,
     align=TextAlign.Right,
 )
@@ -101,13 +98,32 @@ if next_event is not None:
     _diff = next_event.end.datetime - CURRENT_DATE
     next_event_text.text = f"{_diff.days} days to {next_event.name}"
 next_event_text.draw()
-print(next_event_text.length)
-Line(
-    Point(int(next_event_text.length) + BASIC_X + 10, divider1.start_point.y),
-    length=buttom_col.height - 10,
+
+next_event_col = bottom_row.add_col()
+next_event_col.set_width(next_event_text.length + BASIC_X_MARGIN)
+process_col = bottom_row.add_col()
+
+divider2 = Line(
+    Point(int(next_event_text.length) + 2 * BASIC_X_MARGIN, divider1.start_point.y),
+    length=bottom_row.height - 10,
     angle=-90,
     width=1,
     canvas=canvas,
+).draw()
+
+ProcessBar(
+    start_point=Point(
+        divider2.start_point.x + BASIC_X_MARGIN, divider2.start_point.y + BASIC_Y_MARGIN
+    ),
+    width=canvas.width - 2 * BASIC_Y_MARGIN - divider2.start_point.x,
+    height=process_col.height - 2 * BASIC_Y_MARGIN,
+    process=(
+        CURRENT_DATE
+        - datetime.datetime(CURRENT_DATE.year, 1, 1, tzinfo=datetime.timezone.utc)
+    ).days
+    / 365,
+    canvas=canvas,
+    padding=5,
 ).draw()
 
 canvas.save("app.bmp")
