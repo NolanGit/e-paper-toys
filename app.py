@@ -68,7 +68,7 @@ weather_row = Row(
 draw(canvas=canvas, row=weather_row)
 
 divider1 = Line(
-    Point(BASIC_X_MARGIN, weather_row.end_y + 15),
+    Point(BASIC_X_MARGIN, weather_row.end_y + BASIC_Y_MARGIN),
     length=canvas.width - BASIC_X_MARGIN * 2,
     angle=0,
     width=1,
@@ -78,7 +78,7 @@ divider1 = Line(
 bottom_row = Row(
     canvas=canvas,
     x=BASIC_X_MARGIN,
-    y=weather_row.end_y + 15,
+    y=weather_row.end_y + BASIC_Y_MARGIN,
     width=canvas.width - BASIC_X_MARGIN * 2,
     height=canvas.height - BASIC_Y_MARGIN - weather_row.end_y,
 )
@@ -105,7 +105,7 @@ process_col = bottom_row.add_col()
 
 divider2 = Line(
     Point(int(next_event_text.length) + 2 * BASIC_X_MARGIN, divider1.start_point.y),
-    length=bottom_row.height - 10,
+    length=bottom_row.height - BASIC_Y_MARGIN,
     angle=-90,
     width=1,
     canvas=canvas,
