@@ -4,7 +4,7 @@ from libs.shapes import Point
 from libs.canvas import Canvas
 from libs.font import get_font
 from libs.layout import Column, Row
-from libs.process_bar import ProcessBar
+from libs.progress import ProgressBar
 from libs.line import Line
 from libs.text import Text, TextAlign
 
@@ -101,29 +101,37 @@ next_event_text.draw()
 
 next_event_col = bottom_row.add_col()
 next_event_col.set_width(next_event_text.length + BASIC_X_MARGIN)
-process_col = bottom_row.add_col()
+progress_col = bottom_row.add_col()
 
 divider2 = Line(
-    Point(int(next_event_text.length)+BASIC_X_MARGIN , divider1.start_point.y),
+    Point(int(next_event_text.length) + BASIC_X_MARGIN, divider1.start_point.y),
     length=bottom_row.height,
     angle=-90,
     width=1,
     canvas=canvas,
 ).draw()
 
-process_text_row = process_col.add_row()
-process_bar_row = process_col.add_row()
-ProcessBar(
+progress_text_row = progress_col.add_row()
+progress_bar_row = progress_col.add_row()
+_progress = (
+    CURRENT_DATE
+    - datetime.datetime(CURRENT_DATE.year, 1, 1, tzinfo=datetime.timezone.utc)
+).days / 365
+Text(
+    text=f"{CURRENT_DATE.year} is {format(_progress*100,'.3f')} % complete.",
+    font=get_font(24),
+    point=progress_text_row.center_point,
+    canvas=canvas,
+    align=TextAlign.Center,
+).draw()
+ProgressBar(
     start_point=Point(
-        divider2.start_point.x + BASIC_X_MARGIN, process_text_row.end_y + BASIC_Y_MARGIN
+        divider2.start_point.x + BASIC_X_MARGIN,
+        progress_text_row.end_y,
     ),
     width=canvas.width - 2 * BASIC_Y_MARGIN - divider2.start_point.x,
-    height=process_bar_row.height - 2 * BASIC_Y_MARGIN,
-    process=(
-        CURRENT_DATE
-        - datetime.datetime(CURRENT_DATE.year, 1, 1, tzinfo=datetime.timezone.utc)
-    ).days
-    / 365,
+    height=progress_bar_row.height - BASIC_Y_MARGIN,
+    progress=_progress,
     canvas=canvas,
     padding=5,
 ).draw()

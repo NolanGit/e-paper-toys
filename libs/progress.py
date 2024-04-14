@@ -2,11 +2,11 @@ from libs.canvas import Canvas
 from libs.shapes import Point
 
 
-class ProcessBar:
+class ProgressBar:
     start_point: Point
     width: int
     height: int
-    process: float
+    progress: float
     canvas: Canvas
     padding: int = 2
 
@@ -15,7 +15,7 @@ class ProcessBar:
         start_point: Point,
         width: int,
         height: int,
-        process: float,
+        progress: float,
         canvas: Canvas,
         padding: int = 2,
     ) -> None:
@@ -23,7 +23,7 @@ class ProcessBar:
         self.y = start_point.y
         self.width = width
         self.height = height
-        self.process = process
+        self.progress = progress
         self.canvas = canvas
         self.padding = padding
 
@@ -38,12 +38,12 @@ class ProcessBar:
             outline=0,
             width=1,
         )
-        self.process_end_x = int(self.process * (self.width - 2 * self.padding))
+        self.progress_end_x = int(self.progress * (self.width - 2 * self.padding))
         self.canvas.image_draw.rectangle(
             xy=[
                 (self.x + self.padding, self.y + self.padding),
                 (
-                    self.x + self.process_end_x,
+                    self.x + self.progress_end_x,
                     self.y + self.height -  self.padding,
                 ),
             ],
