@@ -27,8 +27,8 @@ CALENDAR_ROW_HEIGHT = 20
 
 calendar_row = Row(
     canvas=canvas,
-    x=BASIC_X_MARGIN,
-    y=BASIC_Y_MARGIN,
+    x=0,
+    y=0,
     width=canvas.width - BASIC_X_MARGIN * 2,
     height=CALENDAR_ROW_HEIGHT,
 )
@@ -68,8 +68,8 @@ weather_row = Row(
 draw(canvas=canvas, row=weather_row)
 
 divider1 = Line(
-    Point(BASIC_X_MARGIN, weather_row.end_y + BASIC_Y_MARGIN),
-    length=canvas.width - BASIC_X_MARGIN * 2,
+    Point(0, weather_row.end_y + BASIC_Y_MARGIN),
+    length=canvas.width,
     angle=0,
     width=1,
     canvas=canvas,
@@ -79,7 +79,7 @@ bottom_row = Row(
     canvas=canvas,
     x=BASIC_X_MARGIN,
     y=weather_row.end_y + BASIC_Y_MARGIN,
-    width=canvas.width - BASIC_X_MARGIN * 2,
+    width=canvas.width,
     height=canvas.height - BASIC_Y_MARGIN - weather_row.end_y,
 )
 
@@ -90,7 +90,7 @@ next_event = get_next_event(
 next_event_text = Text(
     text="",
     font=get_font(24),
-    point=Point(BASIC_X_MARGIN, bottom_row.center_point.y),
+    point=Point(0, bottom_row.center_point.y),
     canvas=canvas,
     align=TextAlign.Right,
 )
@@ -104,19 +104,21 @@ next_event_col.set_width(next_event_text.length + BASIC_X_MARGIN)
 process_col = bottom_row.add_col()
 
 divider2 = Line(
-    Point(int(next_event_text.length) + 2 * BASIC_X_MARGIN, divider1.start_point.y),
-    length=bottom_row.height - BASIC_Y_MARGIN,
+    Point(int(next_event_text.length)+BASIC_X_MARGIN , divider1.start_point.y),
+    length=bottom_row.height,
     angle=-90,
     width=1,
     canvas=canvas,
 ).draw()
 
+process_text_row = process_col.add_row()
+process_bar_row = process_col.add_row()
 ProcessBar(
     start_point=Point(
-        divider2.start_point.x + BASIC_X_MARGIN, divider2.start_point.y + BASIC_Y_MARGIN
+        divider2.start_point.x + BASIC_X_MARGIN, process_text_row.end_y + BASIC_Y_MARGIN
     ),
     width=canvas.width - 2 * BASIC_Y_MARGIN - divider2.start_point.x,
-    height=process_col.height - 2 * BASIC_Y_MARGIN,
+    height=process_bar_row.height - 2 * BASIC_Y_MARGIN,
     process=(
         CURRENT_DATE
         - datetime.datetime(CURRENT_DATE.year, 1, 1, tzinfo=datetime.timezone.utc)
