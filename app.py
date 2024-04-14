@@ -27,8 +27,8 @@ CALENDAR_ROW_HEIGHT = 20
 
 calendar_row = Row(
     canvas=canvas,
-    x=0,
-    y=0,
+    x=BASIC_X_MARGIN,
+    y=BASIC_Y_MARGIN,
     width=canvas.width - BASIC_X_MARGIN * 2,
     height=CALENDAR_ROW_HEIGHT,
 )
@@ -68,8 +68,8 @@ weather_row = Row(
 draw(canvas=canvas, row=weather_row)
 
 divider1 = Line(
-    Point(0, weather_row.end_y + BASIC_Y_MARGIN),
-    length=canvas.width,
+    Point(BASIC_X_MARGIN, weather_row.end_y + BASIC_Y_MARGIN),
+    length=canvas.width - 2 * BASIC_X_MARGIN,
     angle=0,
     width=1,
     canvas=canvas,
@@ -90,7 +90,7 @@ next_event = get_next_event(
 next_event_text = Text(
     text="",
     font=get_font(24),
-    point=Point(0, bottom_row.center_point.y),
+    point=Point(BASIC_X_MARGIN, bottom_row.center_point.y),
     canvas=canvas,
     align=TextAlign.Right,
 )
@@ -104,7 +104,7 @@ next_event_col.set_width(next_event_text.length + BASIC_X_MARGIN)
 progress_col = bottom_row.add_col()
 
 divider2 = Line(
-    Point(int(next_event_text.length) + BASIC_X_MARGIN, divider1.start_point.y),
+    Point(int(next_event_text.length) + 2*BASIC_X_MARGIN, divider1.start_point.y),
     length=bottom_row.height,
     angle=-90,
     width=1,
